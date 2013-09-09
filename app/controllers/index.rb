@@ -9,10 +9,15 @@ get '/:username' do
   @username = params[:username]
 
   @user = TwitterUser.find_or_create_by_username(@username)
-  if @user.tweets.empty?
-    @tweets = fetch_tweets!(@user)
+  
+  if @user.tweets.empty? || tweets_stale?(@user.tweets.first.created_at)
+  
+    fetch_tweets!(@user)
   end
-  @tweets
+
+  @tweets = @user.tweets.limit(10)
+
+  erb :tweets
 end
 
 # get '/:username' do
