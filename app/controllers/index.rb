@@ -20,6 +20,7 @@ get '/:username' do
   erb :tweets
 end
 
+
 # get '/:username' do
 
 #   @username = params[:username]
@@ -39,4 +40,12 @@ post '/tweets' do
 
 redirect "/#{params[:username]}"
 
+end
+
+
+post '/tweet_submit' do
+  puts params
+  @tweet = params[:tweet]
+  Twitter.update(@tweet)
+  erb :tweet_submit
 end
